@@ -14,7 +14,7 @@ function createGallery() {
     for (let i = 0; i < works.length; i++) {
 
         const sectionWorks = document.querySelector(".gallery");
-        const workElement = document.createElement("work");
+        const workElement = document.createElement("div");
         const imageWork = document.createElement("img");
         const titleWork = document.createElement("p");
 
