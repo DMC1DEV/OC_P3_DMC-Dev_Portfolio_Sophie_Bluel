@@ -3,6 +3,14 @@ async function loadApi() {
         .then(response => response.json())
         .then(data => (works = data));
 
+    createGallery();
+    loadFiltres();
+}
+
+loadApi()
+
+function createGallery() {
+
     for (let i = 0; i < works.length; i++) {
 
         const sectionWorks = document.querySelector(".gallery");
@@ -16,14 +24,26 @@ async function loadApi() {
         sectionWorks.appendChild(workElement);
         workElement.appendChild(imageWork);
         workElement.appendChild(titleWork);
-
-        console.log(titleWork)
     }
 }
 
-loadApi();
+async function loadFiltres() {
+    await fetch('http://localhost:5678/api/categories')
+        .then(response => response.json())
+        .then(data => (categories = data));
 
+    for (let i = 0; i < categories.length; i++) {
 
+        const divFiltres = document.querySelector(".filtres");
+        const filtreButton = document.createElement("button");
+        const titleButton = document.createElement("p");
+
+        titleButton.innerText = categories[i].name;
+
+        divFiltres.appendChild(filtreButton);
+        filtreButton.appendChild(titleButton);
+    }
+}
 
 
 

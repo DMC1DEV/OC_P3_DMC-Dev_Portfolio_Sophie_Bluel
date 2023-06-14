@@ -223,6 +223,11 @@ li:hover {
 	margin-bottom: 1em;
 }
 
+.work {
+	transform: scale(1.2);
+    z-index: 2;
+}
+
 .gallery {
 	width: 100%;
 	display: grid;
@@ -233,6 +238,36 @@ li:hover {
 
 .gallery img {
 	width: 100%;
+}
+
+.filtres {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin: auto;
+	width: 40%;
+	margin-bottom: 50px;
+	margin-top: 50px;
+	column-gap: 10px;
+}
+
+.filtres button {
+	width: 200px;
+	border-width: 1, 5px;
+	border-radius: 20px;
+	background: none;
+	padding: 5px;
+	border-color: #1D6154;
+}
+
+.filtres button:hover,
+.filtres p:hover {
+	background-color: #1D6154;
+	color: white;
+}
+
+.filtres p {
+	font-weight: bold;
 }
 
 #contact {
