@@ -135,7 +135,8 @@ table {
 	border-spacing: 0;
 }
 
-/** end reset css**/
+/****** end reset css ******/
+
 body {
 	max-width: 1140px;
 	margin: auto;
@@ -180,6 +181,8 @@ h2 {
 	color: #1D6154
 }
 
+/****** nav ******/
+
 nav ul {
 	display: flex;
 	align-items: center;
@@ -193,7 +196,6 @@ nav li {
 
 nav li a {
 	text-decoration: none;
-	color: inherit;
 }
 
 nav li a:hover {
@@ -201,98 +203,68 @@ nav li a:hover {
 }
 
 nav li a:visited {
-	color: inherit;
+	color: #B1663C;
 }
 
 li:hover {
 	color: #B1663C;
 }
 
-#introduction {
+/****** login ******/
+
+.login {
 	display: flex;
 	align-items: center;
-}
-
-#introduction figure {
-	flex: 1
-}
-
-#introduction img {
-	display: block;
+	flex-direction: column;
 	margin: auto;
-	width: 80%;
-}
-
-#introduction article {
-	flex: 1
-}
-
-#introduction h2 {
-	margin-bottom: 1em;
-}
-
-#introduction p {
-	margin-bottom: 0.5em;
-}
-
-#portfolio h2 {
-	text-align: center;
-	margin-bottom: 1em;
-}
-
-.gallery div {
-	transition: 1s;
-}
-
-.gallery div:hover {
-	transform: scale(1.1);
-	z-index: 2;
-}
-
-.gallery {
+	gap: 20px;
 	width: 100%;
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
-	grid-column-gap: 20px;
-	grid-row-gap: 50px;
 	margin-top: 100px;
-	margin-bottom: 100px;
+	margin-bottom: 300px;
 }
 
-.gallery img {
-	width: 100%;
+.login h1 {
+	color: #1D6154;
+	font-weight: 100;
+	font-size: 35px;
 }
 
-.filtres {
+.inputs {
 	display: flex;
-	justify-content: space-between;
 	align-items: center;
+	flex-direction: column;
 	margin: auto;
-	width: 40%;
-	margin-bottom: 50px;
-	margin-top: 50px;
-	column-gap: 10px;
+	gap: 20px;
+	width: 100%;
+	margin-top: 20px;
 }
 
-.filtres button {
+.inputs input {
+	box-shadow: rgba(0, 0, 0, 0.10) 0px 3px 8px;
+	border-style: none;
+	width: 350px;
+	height: 40px;
+}
+
+.inputs p {
+	margin-right: 300px;
+}
+
+.login-button {
 	width: 200px;
 	border-width: 1, 5px;
 	border-radius: 20px;
-	background: none;
+	background: #1D6154;
 	padding: 5px;
-	border-color: #1D6154;
 }
 
-.filtres button:hover,
-.filtres p:hover {
-	background-color: #1D6154;
+.login-button p{
+	background: #1D6154;
 	color: white;
+	font-weight: 100;
 }
 
-.filtres p {
-	font-weight: bold;
-	color: #1D6154;
-}
+/****** contact ******/
 
 #contact {
 	width: 50%;

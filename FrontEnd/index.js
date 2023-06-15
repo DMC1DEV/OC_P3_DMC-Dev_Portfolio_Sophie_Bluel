@@ -1,3 +1,5 @@
+// Load de l'API
+
 async function loadApi() {
     await fetch('http://localhost:5678/api/works')
         .then(response => response.json())
@@ -8,6 +10,9 @@ async function loadApi() {
 }
 
 loadApi()
+
+
+// Gestion du DOM
 
 function createGallery() {
 
@@ -38,6 +43,8 @@ async function loadFiltres() {
         const filtreButton = document.createElement("button");
         const titleButton = document.createElement("p");
 
+        filtreButton.classList.add("btn-filtrer");
+
         titleButton.innerText = categories[i].name;
 
         divFiltres.appendChild(filtreButton);
@@ -45,7 +52,15 @@ async function loadFiltres() {
     }
 }
 
+// Gestion des filtres
 
+const boutonFiltrer = document.querySelector(".btn-filtrer");
+
+boutonFiltrer.addEventListener("click", function () {
+    const worksFiltres = categories.filter(function (categories) {
+        return categories === worksFiltres;
+    });
+})
 
 
 
