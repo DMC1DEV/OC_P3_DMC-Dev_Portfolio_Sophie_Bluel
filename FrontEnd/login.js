@@ -1,38 +1,44 @@
-const loginForm = document.querySelector("#login-form")
+let emailInput = document.getElementById('email');
+let passwordInput = document.getElementById('password');
 
-const admin = [
-    { email: "admin@gmail.com", password: "adminsb0007" }
-];
+let user = {
+    email: '',
+    password: ''
+};
 
-loginForm.addEventListener("submit", (e) => {
-    e.preventDefault()
+function loginFormEnvoi() {
+    const connectBtn = document.getElementById('connect-btn');
+    connectBtn.addEventListener('click', function (event) {
+        event.preventDefault();
+        submitForm();
+    });
+}
 
-    const email = loginForm.email.value
-    const password = loginForm.password.value
+async function submitForm() {
+    try {
+        user.email = emailInput.value.trim();
+        user.password = passwordInput.value.trim();
 
-    const authenticated = authentication(email, password)
+        const response = await fetch('http://localhost:5678/api/users/login', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        });
 
-    if (authenticated) {
-        alert("Connexion réussie")
+        const data = await response.json();
+        console.log(data);
 
-        // Redirection vers page accueil
-
-        window.location.href = "index.html";
-    } else {
-        alert("Email ou mot de passe éronné")
-    }
-})
-
-// Function d'authentification (email, mdp)
-
-function authentication(email, password) {
-
-    for (let i = 0; i < admin.length; i++) {
-        if (admin[i].email === email && admin[i].password === password) {
-            return true
-        } else {
-            return false
+        if (data.token) {
+            localStorage.setItem('token', data.token);
+            window.location.href = 'index.html';
         }
+
+    } catch (error) {
+        console.error(error);
     }
 }
 
+loginFormEnvoi();
