@@ -31,9 +31,13 @@ async function submitForm() {
         const data = await response.json();
         console.log(data);
 
+        // Vérification du token dans le local storage
         if (data.token) {
             localStorage.setItem('token', data.token);
+            localStorage.getItem('token');
             window.location.href = 'index.html';
+        } else {
+            alert('Utilisateur introuvable')
         }
 
     } catch (error) {

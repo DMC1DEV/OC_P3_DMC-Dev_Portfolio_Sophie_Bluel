@@ -181,6 +181,21 @@ h2 {
 	color: #1D6154
 }
 
+/****** admin panel ******/
+
+.admin-panel {
+	display: none;
+	height: 30px;
+	background-color: aqua;
+	border-style: solid; 
+	border-width: 2px;
+}
+
+.admin-panel p {
+	text-decoration: none;
+	background-color: aqua;
+}
+
 /****** nav ******/
 
 nav ul {
