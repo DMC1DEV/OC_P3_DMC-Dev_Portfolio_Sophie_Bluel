@@ -208,6 +208,25 @@ li:hover {
 	color: #B1663C;
 }
 
+#login-btn li{
+	text-decoration-line: none;
+	color: inherit;
+	list-style: none;
+	font-size: inherit;
+}
+
+#login-btn li:hover {
+	color: #B1663C;
+}
+
+#login-btn li:visited {
+	color: inherit;
+}
+
+li:hover {
+	color: #B1663C;
+}
+
 #introduction {
 	display: flex;
 	align-items: center;
