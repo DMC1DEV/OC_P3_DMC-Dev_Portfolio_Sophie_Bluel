@@ -208,7 +208,7 @@ li:hover {
 	color: #B1663C;
 }
 
-#login-btn li{
+#login-btn li {
 	text-decoration-line: none;
 	color: inherit;
 	list-style: none;
@@ -254,10 +254,49 @@ li:hover {
 	margin-bottom: 0.5em;
 }
 
+/****** admin mode ******/
+
+#adminmodepanel-banner {
+	display: flex;
+	background-color: black;
+	height: 40px;
+}
+
+#adminmodepanel-banner button {
+	background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+	margin: auto;
+	color: white;
+}
+
 #portfolio h2 {
 	text-align: center;
-	margin-bottom: 1em;
+	font-size: x-large;
 }
+
+.portfolio-title {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.portfolio-title button {
+	background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+	margin-left: 10px;
+}
+
+/****** gallery ******/
 
 .gallery div {
 	transition: 1s;
@@ -281,6 +320,8 @@ li:hover {
 .gallery img {
 	width: 100%;
 }
+
+/****** filtres ******/
 
 .filtres {
 	display: flex;
@@ -312,6 +353,8 @@ li:hover {
 	font-weight: bold;
 	color: #1D6154;
 }
+
+/****** footer ******/
 
 #contact {
 	width: 50%;

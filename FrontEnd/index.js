@@ -54,20 +54,23 @@ async function loadFiltres() {
 // Activation du mode Admin
 if (localStorage.getItem('token')) {
     async function createAdminMode() {
-        const titlePortfolioDiv = document.querySelector('.portfolio-title');
-        const titlePortfolio = document.createElement('h2');
+        const editButtonDiv = document.querySelector('.portfolio-title');
         const editButton = document.createElement('button');
-        const loginButtondiv = document.querySelector('#login-btn');
+        const loginButtonDiv = document.querySelector('#login-btn');
         const loginButton = document.createElement('li');
+        const adminModePanelDiv = document.querySelector('.adminmodepanel');
+        const adminModePanel = document.createElement('div');
+        const adminModePanelButton = document.createElement('button');
 
+        adminModePanel.id = 'adminmodepanel-banner';
+        adminModePanelButton.innerText = 'Mode édition';
         loginButton.innerText = 'logout';
-
-        titlePortfolio.innerText = 'Projets';
         editButton.innerText = 'Modifier';
 
-        titlePortfolioDiv.appendChild(titlePortfolio);
-        titlePortfolioDiv.appendChild(editButton);
-        loginButtondiv.appendChild(loginButton);
+        adminModePanelDiv.appendChild(adminModePanel);
+        adminModePanel.appendChild(adminModePanelButton);
+        editButtonDiv.appendChild(editButton);
+        loginButtonDiv.appendChild(loginButton);
 
         loginButton.addEventListener('click', function () {
             localStorage.removeItem('token');
@@ -76,7 +79,7 @@ if (localStorage.getItem('token')) {
     }
 
     createAdminMode();
-    
+
 } else {
     const loginButtondiv = document.querySelector('#login-btn');
     const loginButton = document.createElement('li');
