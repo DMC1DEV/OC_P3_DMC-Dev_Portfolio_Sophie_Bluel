@@ -147,13 +147,13 @@ header {
 	display: flex;
 	justify-content: space-between;
 	flex-direction: column;
-	margin: 50px 0
+	margin: 40px 0
 }
 
 .header-div {
 	display: flex;
 	justify-content: space-between;
-	margin: 50px 0
+	margin: 20px 0
 }
 
 .logo-SB {
@@ -220,10 +220,12 @@ li:hover {
 	color: inherit;
 	list-style: none;
 	font-size: inherit;
+	cursor: pointer;
 }
 
 #login-btn li:hover {
 	color: #B1663C;
+	cursor: pointer;
 }
 
 #login-btn li:visited {
@@ -269,10 +271,8 @@ li:hover {
 	position: fixed;
 	top: 0;
 	left: 0;
-	background-color: black;
 	height: 40px;
 }
-
 
 #adminmodepanel-banner {
 	display: flex;
