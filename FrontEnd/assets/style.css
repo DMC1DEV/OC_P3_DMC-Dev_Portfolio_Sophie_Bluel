@@ -110,50 +110,24 @@ section {
 
 body {
 	line-height: 1;
-}
-
-ol,
-ul {
-	list-style: none;
-}
-
-blockquote,
-q {
-	quotes: none;
-}
-
-blockquote:before,
-blockquote:after,
-q:before,
-q:after {
-	content: '';
-	content: none;
-}
-
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
-
-/** end reset css**/
-body {
 	max-width: 1140px;
 	margin: auto;
 	font-family: 'Work Sans';
 	font-size: 14px;
+	overflow: visible;
 }
 
 header {
 	display: flex;
 	justify-content: space-between;
 	flex-direction: column;
-	margin: 40px 0
+	margin: 40px 0;
 }
 
 .header-div {
 	display: flex;
 	justify-content: space-between;
-	margin: 20px 0
+	margin: 20px 0;
 }
 
 .logo-SB {
@@ -161,7 +135,7 @@ header {
 }
 
 section {
-	margin: 50px 0
+	margin: 50px 0;
 }
 
 h1 {
@@ -170,21 +144,20 @@ h1 {
 	font-family: 'Syne';
 	font-size: 22px;
 	font-weight: 800;
-	color: #B1663C
+	color: #B1663C;
 }
 
 h1>span {
 	font-family: 'Work Sans';
 	font-size: 10px;
 	letter-spacing: 0.1em;
-	;
 }
 
 h2 {
 	font-family: 'Syne';
 	font-weight: 700;
 	font-size: 30px;
-	color: #1D6154
+	color: #1D6154;
 }
 
 nav ul {
@@ -242,7 +215,7 @@ li:hover {
 }
 
 #introduction figure {
-	flex: 1
+	flex: 1;
 }
 
 #introduction img {
@@ -252,7 +225,7 @@ li:hover {
 }
 
 #introduction article {
-	flex: 1
+	flex: 1;
 }
 
 #introduction h2 {
@@ -312,6 +285,49 @@ li:hover {
 	cursor: pointer;
 	outline: inherit;
 	margin-left: 10px;
+}
+
+/****** modale ******/
+
+/* Style de la modale */
+
+.modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 99999;
+}
+
+#modal-edit.modal {
+	z-index: 99999;
+}
+
+.modal-content {
+	width: 400px;
+	height: 400px;
+	background-color: white;
+	border-radius: 10px;
+	padding: 20px;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+.close {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
+}
+
+.close:hover {
+	color: red;
 }
 
 /****** gallery ******/
@@ -381,7 +397,6 @@ li:hover {
 
 #contact>* {
 	text-align: center;
-
 }
 
 #contact h2 {
@@ -425,7 +440,7 @@ input[type="submit"] {
 footer nav ul {
 	display: flex;
 	justify-content: flex-end;
-	margin: 2em
+	margin: 2em;
 }
 
 /****** Modal-edit ******/
