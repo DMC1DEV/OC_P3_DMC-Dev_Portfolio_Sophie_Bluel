@@ -146,6 +146,13 @@ body {
 header {
 	display: flex;
 	justify-content: space-between;
+	flex-direction: column;
+	margin: 50px 0
+}
+
+.header-div {
+	display: flex;
+	justify-content: space-between;
 	margin: 50px 0
 }
 
@@ -255,6 +262,17 @@ li:hover {
 }
 
 /****** admin mode ******/
+
+.adminmodepanel {
+	width: 100%;
+	margin: 0;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background-color: black;
+	height: 40px;
+}
+
 
 #adminmodepanel-banner {
 	display: flex;
