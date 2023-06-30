@@ -12,7 +12,6 @@ async function loadApi() {
     }
 
     loadFiltres();
-
 }
 
 loadApi();
@@ -36,14 +35,28 @@ function createGallery() {
     }
 }
 
-// Création des différents filtres
+// Chargement des filtres
 async function loadFiltres() {
     const response = await fetch('http://localhost:5678/api/categories');
     const data = await response.json();
     categories = data;
 
+    const divFiltres = document.querySelector('.filtres');
+    const tousButton = document.createElement('button');
+    const tousTitle = document.createElement('p');
+
+    tousButton.classList.add('btn-filtrer');
+    tousTitle.innerText = 'Tous';
+
+    tousButton.appendChild(tousTitle);
+    divFiltres.insertBefore(tousButton, divFiltres.firstChild);
+
+    // Ajout de l'écouteur d'événement pour le bouton "Tous"
+    tousButton.addEventListener('click', () => {
+        filterWorksByCategory(null);
+    });
+
     for (let i = 0; i < categories.length; i++) {
-        const divFiltres = document.querySelector('.filtres');
         const filtreButton = document.createElement('button');
         const titleButton = document.createElement('p');
 
@@ -52,8 +65,36 @@ async function loadFiltres() {
 
         filtreButton.appendChild(titleButton);
         divFiltres.appendChild(filtreButton);
+
+        // Ajout de l'écouteur d'événement pour les autres boutons de filtre
+        filtreButton.addEventListener('click', () => {
+            filterWorksByCategory(categories[i].id);
+        });
     }
 }
+
+
+// Filtrage des projets par catégorie
+function filterWorksByCategory(categoryId) {
+    const sectionWorks = document.querySelector('.gallery');
+    const worksElements = sectionWorks.querySelectorAll('div');
+
+    // Afficher toutes les œuvres initialement
+    worksElements.forEach((element) => {
+        element.style.display = 'block';
+    });
+
+    // Filtrer les œuvres par catégorie
+    for (let i = 0; i < works.length; i++) {
+        const workElement = worksElements[i];
+
+        if (categoryId && works[i].categoryId !== categoryId) {
+            workElement.style.display = 'none';
+        }
+    }
+}
+
+// ...
 
 // Activation du mode Admin
 if (localStorage.getItem('token')) {
@@ -146,5 +187,8 @@ function createModal() {
 // Sélection de l'élément du bouton "Modifier"
 const editButton = document.querySelector('.portfolio-title button');
 
-// Ajout de l'écouteur d'événement pour ouvrir la modale lorsque le bouton est cliqué
-editButton.addEventListener('click', openModal);
+// Vérifier si l'élément existe avant d'ajouter l'événement
+if (editButton) {
+    // Ajout de l'écouteur d'événement pour ouvrir la modale lorsque le bouton est cliqué
+    editButton.addEventListener('click', openModal);
+}

@@ -376,24 +376,30 @@ li:hover {
 	column-gap: 10px;
 }
 
-.filtres button {
+.btn-filtrer {
 	width: 200px;
 	border-width: 1, 5px;
 	border-radius: 20px;
 	background: none;
+	border-style: solid;
 	padding: 5px;
 	border-color: #1D6154;
+	white-space: nowrap;
+	cursor: pointer;
+	transition: background-color 0.3s, color 0.3s;
 }
 
-.filtres button:hover,
-.filtres p:hover {
-	background-color: #1D6154;
+.btn-filtrer p {
+	color: #1D6154;
+	background: none;
+}
+
+.btn-filtrer p:hover {
 	color: white;
 }
 
-.filtres p {
-	font-weight: bold;
-	color: #1D6154;
+.btn-filtrer:hover {
+	background: #1D6154;
 }
 
 /****** footer ******/
@@ -450,4 +456,3 @@ footer nav ul {
 	justify-content: flex-end;
 	margin: 2em;
 }
-
