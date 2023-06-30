@@ -1,22 +1,25 @@
 /****** API ******/
 
-// Load de l'API
-
+// Chargement de l'API
 async function loadApi() {
-    await fetch('http://localhost:5678/api/works')
-        .then(response => response.json())
-        .then(data => (works = data));
-
+    const response = await fetch('http://localhost:5678/api/works');
+    const data = await response.json();
+    works = data;
     createGallery();
+
+    if (localStorage.getItem('token')) {
+        return;
+    }
+
     loadFiltres();
+
 }
 
 loadApi();
 
 /****** Création du DOM ******/
 
-// Création de la gallery de projets
-
+// Création de la galerie de projets
 function createGallery() {
     for (let i = 0; i < works.length; i++) {
         const sectionWorks = document.querySelector('.gallery');
@@ -27,18 +30,17 @@ function createGallery() {
         imageWork.src = works[i].imageUrl;
         titleWork.innerText = works[i].title;
 
-        sectionWorks.appendChild(workElement);
         workElement.appendChild(imageWork);
         workElement.appendChild(titleWork);
+        sectionWorks.appendChild(workElement);
     }
 }
 
 // Création des différents filtres
-
 async function loadFiltres() {
-    await fetch('http://localhost:5678/api/categories')
-        .then(response => response.json())
-        .then(data => (categories = data));
+    const response = await fetch('http://localhost:5678/api/categories');
+    const data = await response.json();
+    categories = data;
 
     for (let i = 0; i < categories.length; i++) {
         const divFiltres = document.querySelector('.filtres');
@@ -46,18 +48,16 @@ async function loadFiltres() {
         const titleButton = document.createElement('p');
 
         filtreButton.classList.add('btn-filtrer');
-
         titleButton.innerText = categories[i].name;
 
-        divFiltres.appendChild(filtreButton);
         filtreButton.appendChild(titleButton);
+        divFiltres.appendChild(filtreButton);
     }
 }
 
 // Activation du mode Admin
-
 if (localStorage.getItem('token')) {
-    async function createAdminMode() {
+    function createAdminMode() {
         const editButtonDiv = document.querySelector('.portfolio-title');
         const editButton = document.createElement('button');
         const loginButtonDiv = document.querySelector('#login-btn');
@@ -71,8 +71,8 @@ if (localStorage.getItem('token')) {
         loginButton.innerText = 'logout';
         editButton.innerText = 'Modifier';
 
-        adminModePanelDiv.appendChild(adminModePanel);
         adminModePanel.appendChild(adminModePanelButton);
+        adminModePanelDiv.appendChild(adminModePanel);
         editButtonDiv.appendChild(editButton);
         loginButtonDiv.appendChild(loginButton);
 
@@ -86,7 +86,6 @@ if (localStorage.getItem('token')) {
     }
 
     createAdminMode();
-
 } else {
     const loginButtondiv = document.querySelector('#login-btn');
     const loginButton = document.createElement('li');
@@ -99,26 +98,23 @@ if (localStorage.getItem('token')) {
     loginButtondiv.appendChild(loginButton);
 }
 
-// Déclarez une variable pour stocker la référence de la modale
+/****** Modal ******/
+
+// Déclaration d'une variable pour stocker la référence de la modale
 let modal = null;
 
 // Fonction pour créer et afficher la modale
 function openModal() {
-    if (localStorage.getItem('token')) {
-        // Vérifiez si la modale existe déjà
-        if (!modal) {
-            modal = createModal();
-            document.body.appendChild(modal);
-        }
-        console.log("La fonction openModal() a été appelée !");
+    // Vérifiez si la modale existe déjà
+    if (!modal) {
+        modal = createModal();
+        document.body.appendChild(modal);
     }
 }
 
 // Fonction pour fermer la modale
-
 function closeModal() {
     // Vérifiez si la modale existe avant de la supprimer
-
     if (modal) {
         modal.remove();
         modal = null;
@@ -126,7 +122,6 @@ function closeModal() {
 }
 
 // Fonction pour créer la structure HTML de la modale
-
 function createModal() {
     const modal = document.createElement('div');
     modal.classList.add('modal');
@@ -142,13 +137,14 @@ function createModal() {
     content.appendChild(closeButton);
     modal.appendChild(content);
 
+    // Déplacement de l'élément modal en première position dans le body
+    document.body.insertBefore(modal, document.body.firstChild);
+
     return modal;
 }
 
-// Sélectionnez l'élément du bouton "Modifier"
-
+// Sélection de l'élément du bouton "Modifier"
 const editButton = document.querySelector('.portfolio-title button');
 
-// Ajoutez l'écouteur d'événement pour ouvrir la modale lorsque le bouton est cliqué
-
+// Ajout de l'écouteur d'événement pour ouvrir la modale lorsque le bouton est cliqué
 editButton.addEventListener('click', openModal);
