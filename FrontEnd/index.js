@@ -94,8 +94,6 @@ function filterWorksByCategory(categoryId) {
     }
 }
 
-// ...
-
 // Activation du mode Admin
 if (localStorage.getItem('token')) {
     function createAdminMode() {
@@ -127,6 +125,7 @@ if (localStorage.getItem('token')) {
     }
 
     createAdminMode();
+
 } else {
     const loginButtondiv = document.querySelector('#login-btn');
     const loginButton = document.createElement('li');
@@ -138,6 +137,12 @@ if (localStorage.getItem('token')) {
     loginButton.appendChild(loginButtonLink);
     loginButtondiv.appendChild(loginButton);
 }
+
+
+
+/********************************************************************/
+
+
 
 /****** Modal ******/
 
@@ -153,7 +158,7 @@ function openModal() {
     }
 }
 
-// Fonction pour fermer la modale
+// Fonction pour fermer la modale avec le bouton close
 function closeModal() {
     // Vérifiez si la modale existe avant de la supprimer
     if (modal) {
@@ -175,11 +180,54 @@ function createModal() {
     closeButton.innerHTML = '&times;';
     closeButton.addEventListener('click', closeModal);
 
+    const gallery = createGallery();
+
+    const modalTitle = document.createElement('p')
+    modalTitle.textContent = 'Galerie Photo';
+    modalTitle.classList.add('modal-title')
+
     content.appendChild(closeButton);
+    content.appendChild(modalTitle);
+    content.appendChild(gallery);
+
     modal.appendChild(content);
+
+    // Création de la galerie de projets
+    function createGallery() {
+        const gallery = document.createElement('div');
+        gallery.id = 'gallery-modal';
+
+        for (let i = 0; i < works.length; i++) {
+            const workElement = document.createElement('div');
+            const imageWork = document.createElement('img');
+            const titleWork = document.createElement('p');
+            const deleteIcon = document.createElement('i'); 
+
+            imageWork.src = works[i].imageUrl;
+            titleWork.innerText = 'editer';
+            deleteIcon.classList.add('fas', 'fa-trash-alt', 'delete-icon'); 
+            deleteIcon.id = 'trash-icon';
+
+            workElement.classList.add('gallery-card');
+
+            workElement.appendChild(imageWork);
+            workElement.appendChild(deleteIcon);
+            workElement.appendChild(titleWork);
+            gallery.appendChild(workElement);
+        }
+
+        return gallery;
+    }
 
     // Déplacement de l'élément modal en première position dans le body
     document.body.insertBefore(modal, document.body.firstChild);
+
+    // Ferme la modale en cliquant en dehors de la modale
+    modal.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
 
     return modal;
 }
