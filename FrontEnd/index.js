@@ -16,6 +16,8 @@ async function loadApi() {
 
 loadApi();
 
+/********************************************************************/
+
 /****** Création du DOM ******/
 
 // Création de la galerie de projets
@@ -34,6 +36,8 @@ function createGallery() {
         sectionWorks.appendChild(workElement);
     }
 }
+
+/********************************************************************/
 
 // Chargement des filtres
 async function loadFiltres() {
@@ -73,7 +77,6 @@ async function loadFiltres() {
     }
 }
 
-
 // Filtrage des projets par catégorie
 function filterWorksByCategory(categoryId) {
     const sectionWorks = document.querySelector('.gallery');
@@ -94,38 +97,13 @@ function filterWorksByCategory(categoryId) {
     }
 }
 
+/********************************************************************/
+
+/****** Admin mode *****/
+
 // Activation du mode Admin
 if (localStorage.getItem('token')) {
-    function createAdminMode() {
-        const editButtonDiv = document.querySelector('.portfolio-title');
-        const editButton = document.createElement('button');
-        const loginButtonDiv = document.querySelector('#login-btn');
-        const loginButton = document.createElement('li');
-        const adminModePanelDiv = document.querySelector('.adminmodepanel');
-        const adminModePanel = document.createElement('div');
-        const adminModePanelButton = document.createElement('button');
-
-        adminModePanel.id = 'adminmodepanel-banner';
-        adminModePanelButton.innerText = 'Mode édition';
-        loginButton.innerText = 'logout';
-        editButton.innerText = 'Modifier';
-
-        adminModePanel.appendChild(adminModePanelButton);
-        adminModePanelDiv.appendChild(adminModePanel);
-        editButtonDiv.appendChild(editButton);
-        loginButtonDiv.appendChild(loginButton);
-
-        // Ajout de l'écouteur d'événement pour ouvrir la modale
-        editButton.addEventListener('click', openModal);
-
-        loginButton.addEventListener('click', function () {
-            localStorage.removeItem('token');
-            window.location.href = 'index.html';
-        });
-    }
-
     createAdminMode();
-
 } else {
     const loginButtondiv = document.querySelector('#login-btn');
     const loginButton = document.createElement('li');
@@ -138,10 +116,40 @@ if (localStorage.getItem('token')) {
     loginButtondiv.appendChild(loginButton);
 }
 
+// Création du mode Admin
+function createAdminMode() {
+    const editButtonDiv = document.querySelector('.portfolio-title');
+    const editButton = document.createElement('button');
+    const logoutButtonDiv = document.querySelector('#login-btn');
+    const logoutButton = document.createElement('li');
 
+    editButton.innerText = 'Modifier';
+    logoutButton.innerText = 'Log out';
+
+    editButtonDiv.appendChild(editButton);
+    logoutButtonDiv.appendChild(logoutButton);
+
+    // Ajout de l'écouteur d'événement pour ouvrir la modale
+    editButton.addEventListener('click', openModal);
+
+    logoutButton.addEventListener('click', function () {
+        localStorage.removeItem('token');
+        window.location.href = 'index.html';
+    });
+
+    const adminModePanelDiv = document.createElement('div');
+    adminModePanelDiv.classList.add('adminmodepanel');
+    const adminModePanel = document.createElement('div');
+    adminModePanel.id = 'adminmodepanel-banner';
+    const adminModePanelButton = document.createElement('button');
+    adminModePanelButton.innerText = 'Mode édition';
+
+    adminModePanel.appendChild(adminModePanelButton);
+    adminModePanelDiv.appendChild(adminModePanel);
+    editButtonDiv.parentNode.insertBefore(adminModePanelDiv, editButtonDiv.nextSibling);
+}
 
 /********************************************************************/
-
 
 
 /****** Modal ******/
@@ -169,6 +177,67 @@ function closeModal() {
 
 // Fonction pour créer la structure HTML de la modale
 function createModal() {
+    // Création de la galerie de projets
+    function createGallery() {
+        const gallery = document.createElement('div');
+        gallery.id = 'gallery-modal';
+
+        for (let i = 0; i < works.length; i++) {
+            const workElement = document.createElement('div');
+            const imageWork = document.createElement('img');
+            const titleWork = document.createElement('p');
+            const deleteLink = document.createElement('a');
+            const deleteIcon = document.createElement('i');
+
+            imageWork.src = works[i].imageUrl;
+            titleWork.innerText = 'editer';
+
+            deleteIcon.classList.add('fas', 'fa-trash-alt', 'delete-icon');
+            deleteLink.appendChild(deleteIcon);
+            deleteLink.href = '#';
+            deleteLink.id = 'trash-icon';
+
+            deleteLink.addEventListener('click', (event) => {
+                event.preventDefault();
+
+                // Vérifier si le mode admin est activé (vérification du token)
+                const token = localStorage.getItem('token');
+                if (token) {
+                    const url = `http://localhost:5678/api/works/${works[i].id}`;
+
+                    fetch(url, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': `Bearer ${token}` // Inclure le token d'authentification dans l'en-tête de la requête
+                        }
+                    }).then(response => {
+                        if (response.ok) {
+                            // Supprimer le travail de la liste "works"
+                            works.splice(i, 1);
+                            // Mettre à jour l'interface utilisateur (re-créer la galerie avec les travaux mis à jour)
+                            createGallery();
+                        } else {
+                            console.error('Failed to delete work');
+                        }
+                    }).catch((error) => {
+                        console.error('Error:', error);
+                    });
+                } else {
+                    console.log('Admin mode is not enabled');
+                }
+            });
+
+            workElement.classList.add('gallery-card');
+
+            workElement.appendChild(imageWork);
+            workElement.appendChild(deleteLink);
+            workElement.appendChild(titleWork);
+            gallery.appendChild(workElement);
+        }
+
+        return gallery;
+    }
+
     const modal = document.createElement('div');
     modal.classList.add('modal');
 
@@ -186,38 +255,22 @@ function createModal() {
     modalTitle.textContent = 'Galerie Photo';
     modalTitle.classList.add('modal-title')
 
+    const separatorLine = document.createElement('hr');
+    const addButton = document.createElement('button');
+    addButton.classList.add('btn');
+    addButton.innerText = 'Ajouter une photo';
+    const deleteGalleryLink = document.createElement('a');
+    deleteGalleryLink.href = '#';
+    deleteGalleryLink.innerText = 'Supprimer toute la galerie';
+
     content.appendChild(closeButton);
     content.appendChild(modalTitle);
     content.appendChild(gallery);
+    content.appendChild(separatorLine);
+    content.appendChild(addButton);
+    content.appendChild(deleteGalleryLink);
 
     modal.appendChild(content);
-
-    // Création de la galerie de projets
-    function createGallery() {
-        const gallery = document.createElement('div');
-        gallery.id = 'gallery-modal';
-
-        for (let i = 0; i < works.length; i++) {
-            const workElement = document.createElement('div');
-            const imageWork = document.createElement('img');
-            const titleWork = document.createElement('p');
-            const deleteIcon = document.createElement('i'); 
-
-            imageWork.src = works[i].imageUrl;
-            titleWork.innerText = 'editer';
-            deleteIcon.classList.add('fas', 'fa-trash-alt', 'delete-icon'); 
-            deleteIcon.id = 'trash-icon';
-
-            workElement.classList.add('gallery-card');
-
-            workElement.appendChild(imageWork);
-            workElement.appendChild(deleteIcon);
-            workElement.appendChild(titleWork);
-            gallery.appendChild(workElement);
-        }
-
-        return gallery;
-    }
 
     // Déplacement de l'élément modal en première position dans le body
     document.body.insertBefore(modal, document.body.firstChild);
