@@ -1,6 +1,5 @@
 /****** API ******/
 
-// Chargement de l'API
 async function loadApi() {
     const response = await fetch('http://localhost:5678/api/works');
     const data = await response.json();
@@ -20,7 +19,6 @@ loadApi();
 
 /****** Création du DOM ******/
 
-// Création de la galerie de projets
 function createGallery() {
     for (let i = 0; i < works.length; i++) {
         const sectionWorks = document.querySelector('.gallery');
@@ -39,7 +37,8 @@ function createGallery() {
 
 /********************************************************************/
 
-// Chargement des filtres
+/****** Filtres *****/
+
 async function loadFiltres() {
     const response = await fetch('http://localhost:5678/api/categories');
     const data = await response.json();
@@ -55,7 +54,6 @@ async function loadFiltres() {
     tousButton.appendChild(tousTitle);
     divFiltres.insertBefore(tousButton, divFiltres.firstChild);
 
-    // Ajout de l'écouteur d'événement pour le bouton "Tous"
     tousButton.addEventListener('click', () => {
         filterWorksByCategory(null);
     });
@@ -70,24 +68,20 @@ async function loadFiltres() {
         filtreButton.appendChild(titleButton);
         divFiltres.appendChild(filtreButton);
 
-        // Ajout de l'écouteur d'événement pour les autres boutons de filtre
         filtreButton.addEventListener('click', () => {
             filterWorksByCategory(categories[i].id);
         });
     }
 }
 
-// Filtrage des projets par catégorie
 function filterWorksByCategory(categoryId) {
     const sectionWorks = document.querySelector('.gallery');
     const worksElements = sectionWorks.querySelectorAll('div');
 
-    // Afficher toutes les œuvres initialement
     worksElements.forEach((element) => {
         element.style.display = 'block';
     });
 
-    // Filtrer les œuvres par catégorie
     for (let i = 0; i < works.length; i++) {
         const workElement = worksElements[i];
 
@@ -101,7 +95,6 @@ function filterWorksByCategory(categoryId) {
 
 /****** Admin mode *****/
 
-// Activation du mode Admin
 if (localStorage.getItem('token')) {
     createAdminMode();
 } else {
@@ -116,7 +109,6 @@ if (localStorage.getItem('token')) {
     loginButtondiv.appendChild(loginButton);
 }
 
-// Création du mode Admin
 function createAdminMode() {
     const editButtonDiv = document.querySelector('.portfolio-title');
     const editButton = document.createElement('button');
@@ -129,7 +121,6 @@ function createAdminMode() {
     editButtonDiv.appendChild(editButton);
     logoutButtonDiv.appendChild(logoutButton);
 
-    // Ajout de l'écouteur d'événement pour ouvrir la modale
     editButton.addEventListener('click', openModal);
 
     logoutButton.addEventListener('click', function () {
@@ -151,34 +142,26 @@ function createAdminMode() {
 
 /********************************************************************/
 
-
 /****** Modal ******/
 
-// Déclaration d'une variable pour stocker la référence de la modale
 let modal = null;
 
-// Fonction pour créer et afficher la modale
 function openModal() {
-    // Vérifiez si la modale existe déjà
     if (!modal) {
         modal = createModal();
         document.body.appendChild(modal);
     }
 }
 
-// Fonction pour fermer la modale avec le bouton close
 function closeModal() {
-    // Vérifiez si la modale existe avant de la supprimer
     if (modal) {
         modal.remove();
         modal = null;
     }
 }
 
-// Fonction pour créer la structure HTML de la modale
 function createModal() {
-    // Création de la galerie de projets
-    function createGallery() {
+    function createGalleryModal() {
         const gallery = document.createElement('div');
         gallery.id = 'gallery-modal';
 
@@ -200,7 +183,6 @@ function createModal() {
             deleteLink.addEventListener('click', (event) => {
                 event.preventDefault();
 
-                // Vérifier si le mode admin est activé (vérification du token)
                 const token = localStorage.getItem('token');
                 if (token) {
                     const url = `http://localhost:5678/api/works/${works[i].id}`;
@@ -208,14 +190,12 @@ function createModal() {
                     fetch(url, {
                         method: 'DELETE',
                         headers: {
-                            'Authorization': `Bearer ${token}` // Inclure le token d'authentification dans l'en-tête de la requête
+                            'Authorization': `Bearer ${token}`
                         }
                     }).then(response => {
                         if (response.ok) {
-                            // Supprimer le travail de la liste "works"
                             works.splice(i, 1);
-                            // Mettre à jour l'interface utilisateur (re-créer la galerie avec les travaux mis à jour)
-                            createGallery();
+                            createGalleryModal();
                         } else {
                             console.error('Failed to delete work');
                         }
@@ -249,7 +229,7 @@ function createModal() {
     closeButton.innerHTML = '&times;';
     closeButton.addEventListener('click', closeModal);
 
-    const gallery = createGallery();
+    const gallery = createGalleryModal();
 
     const modalTitle = document.createElement('p')
     modalTitle.textContent = 'Galerie Photo';
@@ -263,33 +243,46 @@ function createModal() {
     deleteGalleryLink.href = '#';
     deleteGalleryLink.innerText = 'Supprimer toute la galerie';
 
-    content.appendChild(closeButton);
-    content.appendChild(modalTitle);
-    content.appendChild(gallery);
-    content.appendChild(separatorLine);
-    content.appendChild(addButton);
-    content.appendChild(deleteGalleryLink);
+    deleteGalleryLink.addEventListener('click', function (event) {
+        event.preventDefault();
 
-    modal.appendChild(content);
+        const token = localStorage.getItem('token');
+        if (token) {
+            works.forEach((work, index) => {
+                const url = `http://localhost:5678/api/works/${work.id}`;
 
-    // Déplacement de l'élément modal en première position dans le body
-    document.body.insertBefore(modal, document.body.firstChild);
+                fetch(url, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                }).then(response => {
+                    if (response.ok) {
+                        // supprime le travail de la liste
+                        works.splice(index, 1);
+                    } else {
+                        console.error('Failed to delete work');
+                    }
+                }).catch((error) => {
+                    console.error('Error:', error);
+                });
+            });
 
-    // Ferme la modale en cliquant en dehors de la modale
-    modal.addEventListener('click', (event) => {
-        if (event.target === modal) {
-            closeModal();
+            // Recrée la galerie après que toutes les suppressions soient terminées
+            createGalleryModal();
+        } else {
+            console.log('Admin mode is not enabled');
         }
     });
 
+    content.appendChild(closeButton);
+    content.appendChild(modalTitle);
+    content.appendChild(separatorLine);
+    content.appendChild(addButton);
+    content.appendChild(deleteGalleryLink);
+    content.appendChild(gallery);
+
+    modal.appendChild(content);
+
     return modal;
-}
-
-// Sélection de l'élément du bouton "Modifier"
-const editButton = document.querySelector('.portfolio-title button');
-
-// Vérifier si l'élément existe avant d'ajouter l'événement
-if (editButton) {
-    // Ajout de l'écouteur d'événement pour ouvrir la modale lorsque le bouton est cliqué
-    editButton.addEventListener('click', openModal);
 }
