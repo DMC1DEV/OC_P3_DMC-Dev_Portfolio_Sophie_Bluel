@@ -51,7 +51,7 @@ function createGallery() {
 /****** Filtres *****/
 
 function loadFilters() {
-    const divFilters = document.querySelector(".filtres"); // Correction: Utiliser ".filtres" au lieu de ".filters"
+    const divFilters = document.querySelector(".filtres");
     const allButton = document.createElement("button");
     const allTitle = document.createElement("p");
 
@@ -366,10 +366,12 @@ function createAddPhotoModal() {
     buttonsContainer.classList.add("buttons-container");
     buttonsContainer.appendChild(buttonsRow);
 
+    const addPhotoForm = document.createElement("form");
+    addPhotoForm.addEventListener("submit", handleFormSubmit);
+
     const addPhotoFileInput = document.createElement("input");
     addPhotoFileInput.type = "file";
     addPhotoFileInput.accept = "image/*";
-    addPhotoFileInput.addEventListener("change", handleFileUpload);
 
     const addPhotoPreviewImage = document.createElement("img");
     addPhotoPreviewImage.classList.add("photo-preview");
@@ -397,32 +399,50 @@ function createAddPhotoModal() {
     addPhotoSubmitButton.classList.add("btn");
     addPhotoSubmitButton.innerText = "Ajouter";
 
-    addPhotoSubmitButton.addEventListener("click", () => {
-        // ...
-        // Envoi du formulaire avec les données de la photo
-    });
+    function handleFormSubmit(event) {
+        event.preventDefault();
 
-    function handleFileUpload(event) {
-        const file = event.target.files[0];
+        const title = addPhotoInput.value;
+        const category = addPhotoCategorySelect.value;
+        const file = addPhotoFileInput.files[0];
 
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                addPhotoPreviewImage.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('category', category);
+        formData.append('image', file);
+
+        // Envoi de la demande POST à l'API pour ajouter un nouveau work
+        fetch('http://localhost:5678/api/works', {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+            body: formData,
+        })
+            .then(response => {
+                if (response.ok) {
+                    closeModal();
+                    loadApi();
+                } else {
+                    console.error('Failed to add work');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     }
+
+    addPhotoForm.appendChild(addPhotoFileInput);
+    addPhotoForm.appendChild(addPhotoPreviewImage);
+    addPhotoForm.appendChild(addPhotoTitleLabel);
+    addPhotoForm.appendChild(addPhotoInput);
+    addPhotoForm.appendChild(addPhotoCategoryLabel);
+    addPhotoForm.appendChild(addPhotoCategorySelect);
+    addPhotoForm.appendChild(addPhotoSubmitButton);
 
     addPhotoModalContent.appendChild(buttonsContainer);
     addPhotoModalContent.appendChild(addPhotoTitle);
-    addPhotoModalContent.appendChild(addPhotoFileInput);
-    addPhotoModalContent.appendChild(addPhotoPreviewImage);
-    addPhotoModalContent.appendChild(addPhotoTitleLabel);
-    addPhotoModalContent.appendChild(addPhotoInput);
-    addPhotoModalContent.appendChild(addPhotoCategoryLabel);
-    addPhotoModalContent.appendChild(addPhotoCategorySelect);
-    addPhotoModalContent.appendChild(addPhotoSubmitButton);
+    addPhotoModalContent.appendChild(addPhotoForm);
 
     return addPhotoModalContent;
 }
