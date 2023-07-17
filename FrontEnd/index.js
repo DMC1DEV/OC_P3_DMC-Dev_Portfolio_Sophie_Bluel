@@ -122,8 +122,8 @@ function createAdminMode() {
     const logoutButtonDiv = document.querySelector("#login-btn");
     const logoutButton = document.createElement("li");
 
-    editButton.innerText = "Modifier";
-    logoutButton.innerText = "Log out";
+    editButton.innerText = "modifier";
+    logoutButton.innerText = "log out";
 
     editButtonDiv.appendChild(editButton);
     logoutButtonDiv.appendChild(logoutButton);
@@ -394,6 +394,8 @@ function createAddPhotoModal() {
         option.text = categories[i].name;
         addPhotoCategorySelect.appendChild(option);
     }
+
+/******* Ajout nouveau work dans DB *******/
 
     const addPhotoSubmitButton = document.createElement("button");
     addPhotoSubmitButton.classList.add("btn");
