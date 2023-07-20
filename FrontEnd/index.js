@@ -98,9 +98,10 @@ function filterWorksByCategory(categoryId) {
     }
 }
 
+
 /********************************************************************/
 
-/****** Admin mode *****/
+/****** Mode administrateur *****/
 
 if (localStorage.getItem("token")) {
     createAdminMode();
@@ -122,7 +123,7 @@ function createAdminMode() {
     const logoutButtonDiv = document.querySelector("#login-btn");
     const logoutButton = document.createElement("li");
 
-    editButton.innerText = "modifier";
+    editButton.innerText = "Modifier";
     logoutButton.innerText = "log out";
 
     editButtonDiv.appendChild(editButton);
@@ -135,19 +136,55 @@ function createAdminMode() {
         window.location.href = "index.html";
     });
 
+    // Bannière du mode administrateur
     const adminModePanelDiv = document.createElement("div");
     adminModePanelDiv.classList.add("adminmodepanel");
     const adminModePanel = document.createElement("div");
     adminModePanel.id = "adminmodepanel-banner";
-    const adminModePanelButton = document.createElement("button");
+    const adminModePanelButton = document.createElement("p");
     adminModePanelButton.innerText = "Mode édition";
+    const introductionDiv = document.querySelector("#introduction figure");
+    const newDiv = document.createElement("div");
+    newDiv.id = "introdivleft"
 
+    const bannerSvgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    bannerSvgElement.innerHTML = `<path d="M441 58.9L453.1 71c9.4 9.4 9.4 24.6 0 33.9L424 134.1 377.9 88 407 58.9c9.4-9.4 24.6-9.4 33.9 0zM209.8 256.2L344 121.9 390.1 168 255.8 
+    302.2c-2.9 2.9-6.5 5-10.4 6.1l-58.5 16.7 16.7-58.5c1.1-3.9 3.2-7.5 6.1-10.4zM373.1 25L175.8 222.2c-8.7 8.7-15 19.4-18.3 31.1l-28.6 100c-2.4 8.4-.1 17.4 6.1 23.6s15.2 8.5 23.6 
+    6.1l100-28.6c11.8-3.4 22.5-9.7 31.1-18.3L487 138.9c28.1-28.1 28.1-73.7 0-101.8L474.9 25C446.8-3.1 401.2-3.1 373.1 25zM88 64C39.4 64 0 103.4 0 152V424c0 48.6 39.4 88 88 88H360c48.6 
+    0 88-39.4 88-88V312c0-13.3-10.7-24-24-24s-24 10.7-24 24V424c0 22.1-17.9 40-40 40H88c-22.1 0-40-17.9-40-40V152c0-22.1 17.9-40 40-40H200c13.3 0 24-10.7 24-24s-10.7-24-24-24H88z" 
+    fill="#FFFFFF"></paths>`;
+    bannerSvgElement.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+    bannerSvgElement.setAttribute("height", "1em");
+    bannerSvgElement.setAttribute("viewBox", "0 0 512 512");
+    bannerSvgElement.setAttribute("id", "editiconbanner");
+
+    const introSvgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    introSvgElement.innerHTML = `<path d="M441 58.9L453.1 71c9.4 9.4 9.4 24.6 0 33.9L424 134.1 377.9 88 407 58.9c9.4-9.4 24.6-9.4 33.9 0zM209.8 256.2L344 121.9 390.1 168 255.8 302.2c-2.9 
+    2.9-6.5 5-10.4 6.1l-58.5 16.7 16.7-58.5c1.1-3.9 3.2-7.5 6.1-10.4zM373.1 25L175.8 222.2c-8.7 8.7-15 19.4-18.3 31.1l-28.6 100c-2.4 8.4-.1 17.4 6.1 23.6s15.2 8.5 23.6 6.1l100-28.6c11.8-3.4
+    22.5-9.7 31.1-18.3L487 138.9c28.1-28.1 28.1-73.7 0-101.8L474.9 25C446.8-3.1 401.2-3.1 373.1 25zM88 64C39.4 64 0 103.4 0 152V424c0 48.6 39.4 88 88 88H360c48.6 0 88-39.4 88-88V312c0-13.3-10.7-24-24-24s-24 
+    10.7-24 24V424c0 22.1-17.9 40-40 40H88c-22.1 0-40-17.9-40-40V152c0-22.1 17.9-40 40-40H200c13.3 0 24-10.7 24-24s-10.7-24-24-24H88z" 
+    fill="#000000"></path>`;
+    introSvgElement.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+    introSvgElement.setAttribute("height", "1em");
+    introSvgElement.setAttribute("viewBox", "0 0 512 512");
+    introSvgElement.setAttribute("id", "editiconintro");
+
+    const publishButton = document.createElement("button");
+    publishButton.id = "publier-btn";
+    publishButton.innerText = "Publier les changements";
+
+    const introText = document.createElement("span");
+    introText.innerText = "Modifier";
+
+    adminModePanel.appendChild(bannerSvgElement);
     adminModePanel.appendChild(adminModePanelButton);
+    adminModePanel.appendChild(publishButton);
     adminModePanelDiv.appendChild(adminModePanel);
-    editButtonDiv.parentNode.insertBefore(
-        adminModePanelDiv,
-        editButtonDiv.nextSibling
-    );
+    editButtonDiv.parentNode.insertBefore(adminModePanelDiv, editButtonDiv.nextSibling);
+    introductionDiv.appendChild(newDiv);
+    newDiv.appendChild(introSvgElement);
+    newDiv.appendChild(introText);
+
 }
 
 /********************************************************************/
@@ -257,7 +294,7 @@ function createModal() {
     modalTitle.classList.add("modal-title");
 
     const addButton = document.createElement("button");
-    addButton.classList.add("btn");
+    addButton.classList.add("btn-envoyer");
     addButton.innerText = "Ajouter une photo";
 
     addButton.addEventListener("click", openAddPhotoModal);
@@ -395,7 +432,7 @@ function createAddPhotoModal() {
         addPhotoCategorySelect.appendChild(option);
     }
 
-/******* Ajout nouveau work dans DB *******/
+    /******* Ajout nouveau work dans DB *******/
 
     const addPhotoSubmitButton = document.createElement("button");
     addPhotoSubmitButton.classList.add("btn");
@@ -409,28 +446,28 @@ function createAddPhotoModal() {
         const file = addPhotoFileInput.files[0];
 
         const formData = new FormData();
-        formData.append('title', title);
-        formData.append('category', category);
-        formData.append('image', file);
+        formData.append("title", title);
+        formData.append("category", category);
+        formData.append("image", file);
 
         // Envoi de la demande POST à l'API pour ajouter un nouveau work
-        fetch('http://localhost:5678/api/works', {
-            method: 'POST',
+        fetch("http://localhost:5678/api/works", {
+            method: "POST",
             headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`,
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
             body: formData,
         })
-            .then(response => {
+            .then((response) => {
                 if (response.ok) {
                     closeModal();
                     loadApi();
                 } else {
-                    console.error('Failed to add work');
+                    console.error("Failed to add work");
                 }
             })
-            .catch(error => {
-                console.error('Error:', error);
+            .catch((error) => {
+                console.error("Error:", error);
             });
     }
 
