@@ -14,8 +14,28 @@ function loginFormEnvoi() {
     });
 }
 
+function createErrorMessage(message, targetElement) {
+    let errorMessage = targetElement.nextElementSibling;
+    if (!errorMessage || !errorMessage.classList.contains('error-message')) {
+        errorMessage = document.createElement('span');
+        errorMessage.textContent = message;
+        errorMessage.className = 'error-message';
+        targetElement.parentNode.appendChild(errorMessage);
+    }
+}
+
+function removeErrorMessages() {
+    const errorMessages = document.getElementsByClassName('error-message');
+    while (errorMessages[0]) {
+        errorMessages[0].parentNode.removeChild(errorMessages[0]);
+    }
+}
+
 async function submitForm() {
     try {
+        // Clear les messages d'erreur précédent. 
+        removeErrorMessages();
+
         user.email = emailInput.value.trim();
         user.password = passwordInput.value.trim();
 
@@ -28,21 +48,32 @@ async function submitForm() {
             body: JSON.stringify(user)
         });
 
+        if (!response.ok) {
+            alert('Mot de passe incorrect ou utilisateur introuvable.');
+            return;
+        }
+
         const data = await response.json();
         console.log(data);
 
-        // Vérification du token dans le local storage
         if (data.token) {
             localStorage.setItem('token', data.token);
             localStorage.getItem('token');
             window.location.href = 'index.html';
         } else {
-            alert('Utilisateur introuvable')
+            if (data.errors) {
+                if (data.errors.email) {
+                    createErrorMessage(data.errors.email, emailInput);
+                }
+                if (data.errors.password) {
+                    createErrorMessage(data.errors.password, passwordInput);
+                }
+            }
         }
-
     } catch (error) {
         console.error(error);
     }
 }
+
 
 loginFormEnvoi();

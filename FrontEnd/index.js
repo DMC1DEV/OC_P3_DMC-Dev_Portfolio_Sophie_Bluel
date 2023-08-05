@@ -226,6 +226,8 @@ function createModal() {
             const titleWork = document.createElement("p");
             const deleteLink = document.createElement("a");
             const deleteIcon = document.createElement("i");
+            const hoverLink = document.createElement("a");
+            const hoverIcon = document.createElement("i");
 
             imageWork.src = works[i].imageUrl;
             titleWork.innerText = "editer";
@@ -234,6 +236,11 @@ function createModal() {
             deleteLink.appendChild(deleteIcon);
             deleteLink.href = "#";
             deleteLink.id = "trash-icon";
+
+            hoverIcon.classList.add("fas", "fa-arrows-alt", "croix");
+            hoverLink.appendChild(hoverIcon);
+            hoverLink.href = "#";
+            hoverLink.id = "hover-icon";
 
             deleteLink.addEventListener("click", (event) => {
                 event.preventDefault();
@@ -269,6 +276,7 @@ function createModal() {
 
             workElement.appendChild(imageWork);
             workElement.appendChild(deleteLink);
+            workElement.appendChild(hoverLink);
             workElement.appendChild(titleWork);
             gallery.appendChild(workElement);
         }
@@ -372,7 +380,7 @@ function closeAddPhotoModal() {
     addPhotoModalContent.remove();
 
     const galleryModalContent = document.querySelector(".modal-content");
-    galleryModalContent.style.display = "block";
+    galleryModalContent.style.display = "flex";
 }
 
 function createAddPhotoModal() {
@@ -418,13 +426,19 @@ function createAddPhotoModal() {
 
     const addPhotoInput = document.createElement("input");
     addPhotoInput.type = "text";
-    addPhotoInput.placeholder = "Titre de la photo";
+    addPhotoInput.classList.add("nice-input");
 
     const addPhotoCategoryLabel = document.createElement("p");
     addPhotoCategoryLabel.textContent = "Catégorie";
 
     const addPhotoCategorySelect = document.createElement("select");
-    addPhotoCategorySelect.placeholder = "Choisir une catégorie...";
+    addPhotoCategorySelect.classList.add("nice-input");
+
+    // Ajout de l'option vide pour la catégorie
+    const addPhotoCategoryEmptyOption = document.createElement("option");
+    addPhotoCategoryEmptyOption.value = "";
+    addPhotoCategorySelect.appendChild(addPhotoCategoryEmptyOption);
+
     for (let i = 0; i < categories.length; i++) {
         const option = document.createElement("option");
         option.value = categories[i].id;
@@ -432,10 +446,8 @@ function createAddPhotoModal() {
         addPhotoCategorySelect.appendChild(option);
     }
 
-    /******* Ajout nouveau work dans DB *******/
-
     const addPhotoSubmitButton = document.createElement("button");
-    addPhotoSubmitButton.classList.add("btn");
+    addPhotoSubmitButton.classList.add("btn-envoyer");
     addPhotoSubmitButton.innerText = "Ajouter";
 
     function handleFormSubmit(event) {
@@ -445,12 +457,16 @@ function createAddPhotoModal() {
         const category = addPhotoCategorySelect.value;
         const file = addPhotoFileInput.files[0];
 
+        if (!title || !category || !file) {
+            alert("Veuillez remplir tous les champs avant d'ajouter le projet.");
+            return;
+        }
+
         const formData = new FormData();
         formData.append("title", title);
         formData.append("category", category);
         formData.append("image", file);
 
-        // Envoi de la demande POST à l'API pour ajouter un nouveau work
         fetch("http://localhost:5678/api/works", {
             method: "POST",
             headers: {

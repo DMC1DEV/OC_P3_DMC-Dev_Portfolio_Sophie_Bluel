@@ -90,7 +90,7 @@ video {
 	font-size: 100%;
 	font: inherit;
 	vertical-align: baseline;
-	background-color: #FFFEF8;
+	background-color: white;
 }
 
 /* HTML5 display-role reset for older browsers */
@@ -310,6 +310,8 @@ li:hover {
 	margin-left: 10px;
 }
 
+/*************************************************************/
+
 /****** modal ******/
 
 /* Modal 1 */
@@ -397,9 +399,19 @@ li:hover {
 	position: relative;
 }
 
+.gallery-card:hover .croix{
+	opacity: 1;
+}
+
+#hover-icon i {
+	color: white;
+	background-color: black;
+}
+
 .gallery-card img {
 	width: 100%;
-	height: auto;
+	height: 90%;
+	object-fit: cover;
 }
 
 .gallery-card p {
@@ -408,12 +420,10 @@ li:hover {
 
 .gallery-card .delete-icon {
 	position: absolute;
-	top: 0;
-	right: 0;
+	top: 5px;
+	right: 5px;
 	color: #ffffff;
 	padding: 4px;
-	padding-top: 2px;
-	padding-left: 2px;
 	background-color: black;
 	width: 10px;
 	height: 10px;
@@ -496,6 +506,8 @@ li:hover {
 	color: white;
 }
 
+/********************************************************/
+
 /****** modale 2 ******/
 
 .add-photo-modal {
@@ -525,6 +537,58 @@ li:hover {
 .back-button {
 	cursor: pointer;
 }
+
+.buttons-row {
+	display: flex;
+	align-items: center;
+	max-height: 30px;
+}
+
+.buttons-container {
+	max-height: 30px;
+}
+
+.add-photo-modal-content form {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.add-photo-modal-content form p {
+	margin-right: 340px;
+}
+
+.add-photo-modal-content .modal-title {
+	max-height: 10px;
+}
+
+.photo-preview-div {
+	display: flex;
+	align-items: center;
+}
+
+.photo-preview-div img {
+	margin: auto;
+	width: 50%;
+}
+
+.croix {
+	position: absolute;
+	padding: 4px;
+	top: 5px;
+	right: 25px;
+	opacity: 0;
+}
+
+.nice-input {
+	height: 50px;
+	width: 400px;
+	font-size: 1.2em;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+
 
 /****** footer ******/
 
