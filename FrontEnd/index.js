@@ -290,6 +290,9 @@ function createModal() {
     const content = document.createElement("div");
     content.classList.add("modal-content");
 
+    const separatorDiv = document.createElement("div");
+    separatorDiv.classList.add("separator");
+
     const closeButton = document.createElement("span");
     closeButton.classList.add("close-button");
     closeButton.innerHTML = "&times;";
@@ -348,8 +351,9 @@ function createModal() {
     });
 
     content.appendChild(closeButton);
-    content.appendChild(modalTitle);
+    content.appendChild(modalTitle);    
     content.appendChild(gallery);
+    content.appendChild(separatorDiv);
     content.appendChild(addButton);
     content.appendChild(deleteGalleryLink);
 
@@ -358,7 +362,7 @@ function createModal() {
     return modal;
 }
 
-/********************************************************************/
+/*********************************************************/
 
 /****** Modal ajout photo ******/
 
@@ -403,10 +407,6 @@ function createAddPhotoModal() {
     buttonsRow.appendChild(addPhotoBackButton);
     buttonsRow.appendChild(addPhotoCloseButton);
 
-    const addPhotoTitle = document.createElement("p");
-    addPhotoTitle.textContent = "Ajouter une photo";
-    addPhotoTitle.classList.add("modal-title");
-
     const buttonsContainer = document.createElement("div");
     buttonsContainer.classList.add("buttons-container");
     buttonsContainer.appendChild(buttonsRow);
@@ -414,12 +414,39 @@ function createAddPhotoModal() {
     const addPhotoForm = document.createElement("form");
     addPhotoForm.addEventListener("submit", handleFormSubmit);
 
+    const addPhotoTitle = document.createElement("p");
+    addPhotoTitle.textContent = "Ajouter une photo";
+    addPhotoTitle.classList.add("modal-title");
+
+    const addPictureDiv = document.createElement("div");
+    addPictureDiv.classList.add("add-picture-div");
+
+    const addPhotoImage = document.createElement("img");
+    addPhotoImage.src = "./assets/icons/picture-svgrepo-com 1.png";
+    addPictureDiv.insertBefore(addPhotoImage, addPictureDiv.firstChild);
+
     const addPhotoFileInput = document.createElement("input");
     addPhotoFileInput.type = "file";
     addPhotoFileInput.accept = "image/*";
+    addPhotoFileInput.style.display = "none";
 
-    const addPhotoPreviewImage = document.createElement("img");
-    addPhotoPreviewImage.classList.add("photo-preview");
+    const addPhotoButton = document.createElement("label");
+    addPhotoButton.innerText = "+ Ajouter photo";
+    addPhotoButton.classList.add("add-photo-button");
+    addPhotoButton.classList.add("custom-text-color");
+    addPhotoButton.style.cursor = "pointer";
+    addPhotoButton.setAttribute("for", "fileInput");
+
+    addPhotoButton.addEventListener("click", () => {
+        addPhotoFileInput.click();
+    });
+
+    addPictureDiv.appendChild(addPhotoFileInput);
+    addPictureDiv.appendChild(addPhotoButton);
+
+    const addPhotoInfo = document.createElement("p");
+    addPhotoInfo.textContent = "jpg, png : 4mo max";
+    addPictureDiv.appendChild(addPhotoInfo);
 
     const addPhotoTitleLabel = document.createElement("p");
     addPhotoTitleLabel.textContent = "Titre";
@@ -434,7 +461,6 @@ function createAddPhotoModal() {
     const addPhotoCategorySelect = document.createElement("select");
     addPhotoCategorySelect.classList.add("nice-input");
 
-    // Ajout de l'option vide pour la catégorie
     const addPhotoCategoryEmptyOption = document.createElement("option");
     addPhotoCategoryEmptyOption.value = "";
     addPhotoCategorySelect.appendChild(addPhotoCategoryEmptyOption);
@@ -449,6 +475,10 @@ function createAddPhotoModal() {
     const addPhotoSubmitButton = document.createElement("button");
     addPhotoSubmitButton.classList.add("btn-envoyer");
     addPhotoSubmitButton.innerText = "Ajouter";
+
+    // Ajoutez une div vide avec la classe "separator" avant le bouton "btn-envoyer"
+    const separatorDiv = document.createElement("div");
+    separatorDiv.classList.add("separator");
 
     function handleFormSubmit(event) {
         event.preventDefault();
@@ -487,12 +517,14 @@ function createAddPhotoModal() {
             });
     }
 
-    addPhotoForm.appendChild(addPhotoFileInput);
-    addPhotoForm.appendChild(addPhotoPreviewImage);
+    addPhotoForm.appendChild(addPictureDiv);
     addPhotoForm.appendChild(addPhotoTitleLabel);
     addPhotoForm.appendChild(addPhotoInput);
     addPhotoForm.appendChild(addPhotoCategoryLabel);
     addPhotoForm.appendChild(addPhotoCategorySelect);
+
+    addPhotoForm.appendChild(separatorDiv);
+
     addPhotoForm.appendChild(addPhotoSubmitButton);
 
     addPhotoModalContent.appendChild(buttonsContainer);
@@ -501,3 +533,6 @@ function createAddPhotoModal() {
 
     return addPhotoModalContent;
 }
+
+
+

@@ -90,7 +90,7 @@ video {
 	font-size: 100%;
 	font: inherit;
 	vertical-align: baseline;
-	background-color: white;
+	background-color: #FFFEF8;
 }
 
 /* HTML5 display-role reset for older browsers */
@@ -368,6 +368,7 @@ li:hover {
 	justify-content: flex-end;
 	font-size: 40px;
 	padding-left: 90%;
+	background-color: white;
 }
 
 .close-button:hover {
@@ -378,6 +379,7 @@ li:hover {
 .modal-title {
 	text-align: center;
 	font-size: 18px;
+	background-color: white;
 }
 
 #gallery-modal {
@@ -391,6 +393,7 @@ li:hover {
 	box-sizing: border-box;
 	overflow: hidden;
 	gap: 10px;
+	background-color: white;
 }
 
 .gallery-card {
@@ -399,7 +402,7 @@ li:hover {
 	position: relative;
 }
 
-.gallery-card:hover .croix{
+.gallery-card:hover .croix {
 	opacity: 1;
 }
 
@@ -553,24 +556,60 @@ li:hover {
 	align-items: center;
 	flex-direction: column;
 	justify-content: space-between;
-}
-
-.add-photo-modal-content form p {
-	margin-right: 340px;
+	background-color: white;
+	height: 500px;
 }
 
 .add-photo-modal-content .modal-title {
 	max-height: 10px;
 }
 
-.photo-preview-div {
+.add-picture-div {
 	display: flex;
+	flex-direction: column;
+	justify-content: center;
 	align-items: center;
+	height: 150px;
+	width: 360px;
+	background-color: #E8F1F6;
+	row-gap: 20px;
+	padding: 20px;
 }
 
-.photo-preview-div img {
-	margin: auto;
-	width: 50%;
+.add-picture-div img {
+	width: 58px;
+	height: 58px;
+}
+
+.add-picture-div p {
+	background-color: transparent;
+}
+
+.add-photo-button {
+	display: flex;
+	color: #306685;
+	align-items: center;
+	justify-content: center;
+	font-family: 'Syne';
+	font-weight: 700;
+	color: white;
+	background-color: #CBD6DC;
+	width: 180px;
+	height: 50px;
+	text-align: center;
+	border-radius: 60px;
+	cursor: pointer;
+}
+
+.custom-text-color {
+	color: #306685;
+}
+
+.separator {
+	width: 400px;
+	height: 1px;
+	background-color: #B3B3B3;
+	margin-top: 30px;
 }
 
 .croix {
@@ -633,7 +672,7 @@ li:hover {
 	font-weight: 700;
 	color: white;
 	background-color: #1D6154;
-	margin: 2em auto;
+	margin: 1em auto;
 	width: 180px;
 	height: 40px;
 	text-align: center;
