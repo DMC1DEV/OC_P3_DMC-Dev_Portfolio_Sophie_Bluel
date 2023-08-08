@@ -169,6 +169,20 @@ function createAdminMode() {
     introSvgElement.setAttribute("viewBox", "0 0 512 512");
     introSvgElement.setAttribute("id", "editiconintro");
 
+    const projetsSvgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    projetsSvgElement.innerHTML = `<path d="M441 58.9L453.1 71c9.4 9.4 9.4 24.6 0 33.9L424 134.1 377.9 88 407 58.9c9.4-9.4 24.6-9.4 33.9 0zM209.8 256.2L344 121.9 390.1 168 255.8 302.2c-2.9 
+    2.9-6.5 5-10.4 6.1l-58.5 16.7 16.7-58.5c1.1-3.9 3.2-7.5 6.1-10.4zM373.1 25L175.8 222.2c-8.7 8.7-15 19.4-18.3 31.1l-28.6 100c-2.4 8.4-.1 17.4 6.1 23.6s15.2 8.5 23.6 6.1l100-28.6c11.8-3.4
+    22.5-9.7 31.1-18.3L487 138.9c28.1-28.1 28.1-73.7 0-101.8L474.9 25C446.8-3.1 401.2-3.1 373.1 25zM88 64C39.4 64 0 103.4 0 152V424c0 48.6 39.4 88 88 88H360c48.6 0 88-39.4 88-88V312c0-13.3-10.7-24-24-24s-24 
+    10.7-24 24V424c0 22.1-17.9 40-40 40H88c-22.1 0-40-17.9-40-40V152c0-22.1 17.9-40 40-40H200c13.3 0 24-10.7 24-24s-10.7-24-24-24H88z" 
+    fill="#000000"></path>`;
+    projetsSvgElement.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+    projetsSvgElement.setAttribute("height", "1em");
+    projetsSvgElement.setAttribute("viewBox", "0 0 512 512");
+    projetsSvgElement.setAttribute("id", "projetsicon");
+
+    const portfolioTitleDiv = document.querySelector(".portfolio-title");
+    portfolioTitleDiv.appendChild(projetsSvgElement);
+
     const publishButton = document.createElement("button");
     publishButton.id = "publier-btn";
     publishButton.innerText = "Publier les changements";
@@ -351,7 +365,7 @@ function createModal() {
     });
 
     content.appendChild(closeButton);
-    content.appendChild(modalTitle);    
+    content.appendChild(modalTitle);
     content.appendChild(gallery);
     content.appendChild(separatorDiv);
     content.appendChild(addButton);
@@ -366,6 +380,7 @@ function createModal() {
 
 /****** Modal ajout photo ******/
 
+// Fonction pour ouvrir le modal d'ajout de photo
 function openAddPhotoModal() {
     const galleryModalContent = document.querySelector(".modal-content");
     galleryModalContent.style.display = "none";
@@ -377,6 +392,7 @@ function openAddPhotoModal() {
     );
 }
 
+// Fonction pour fermer le modal d'ajout de photo
 function closeAddPhotoModal() {
     const addPhotoModalContent = document.querySelector(
         ".add-photo-modal-content"
@@ -387,7 +403,43 @@ function closeAddPhotoModal() {
     galleryModalContent.style.display = "flex";
 }
 
+// Fonction pour créer le contenu du modal d'ajout de photo
+
 function createAddPhotoModal() {
+    function handleImageSelection(event) {
+        const file = event.target.files[0];
+
+        if (file) {
+            const fileSizeInBytes = file.size;
+            const maxSizeInBytes = 4 * 1024 * 1024; // 4 Mo
+
+            if (fileSizeInBytes > maxSizeInBytes) {
+                alert("La taille de l'image dépasse la limite de 4 Mo. Veuillez choisir une image plus petite.");
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = (event) => {
+                addPhotoImage.src = event.target.result;
+
+                // Supprimer le contenu existant de la div
+                addPictureDiv.innerHTML = "";
+
+                // Créer un nouvel élément img pour l'aperçu avec un ID fixe
+                const previewImage = document.createElement("img");
+                previewImage.src = event.target.result;
+                previewImage.classList.add("preview-image");
+                previewImage.setAttribute("id", "preview-imageID");
+
+                // Ajouter l'image de l'aperçu à la "ADD-PICTURE-DIV"
+                addPictureDiv.appendChild(previewImage);
+            };
+
+            reader.readAsDataURL(file);
+        }
+    }
+
     const addPhotoModalContent = document.createElement("div");
     addPhotoModalContent.classList.add("add-photo-modal-content");
 
@@ -396,8 +448,9 @@ function createAddPhotoModal() {
 
     const addPhotoBackButton = document.createElement("button");
     addPhotoBackButton.classList.add("back-button");
-    addPhotoBackButton.innerHTML = "&#8249;";
+    addPhotoBackButton.innerHTML = '<img src="./assets/icons/arrow-left.png" alt="Retour">';
     addPhotoBackButton.addEventListener("click", closeAddPhotoModal);
+
 
     const addPhotoCloseButton = document.createElement("span");
     addPhotoCloseButton.classList.add("close-button");
@@ -422,13 +475,15 @@ function createAddPhotoModal() {
     addPictureDiv.classList.add("add-picture-div");
 
     const addPhotoImage = document.createElement("img");
+    addPhotoImage.classList.add("imagePlaceholder");
     addPhotoImage.src = "./assets/icons/picture-svgrepo-com 1.png";
     addPictureDiv.insertBefore(addPhotoImage, addPictureDiv.firstChild);
 
     const addPhotoFileInput = document.createElement("input");
     addPhotoFileInput.type = "file";
-    addPhotoFileInput.accept = "image/*";
+    addPhotoFileInput.accept = "image/jpg, image/png";
     addPhotoFileInput.style.display = "none";
+    addPhotoFileInput.addEventListener("change", handleImageSelection);
 
     const addPhotoButton = document.createElement("label");
     addPhotoButton.innerText = "+ Ajouter photo";
@@ -465,6 +520,7 @@ function createAddPhotoModal() {
     addPhotoCategoryEmptyOption.value = "";
     addPhotoCategorySelect.appendChild(addPhotoCategoryEmptyOption);
 
+    // Assumant que 'categories' est défini ailleurs dans le code.
     for (let i = 0; i < categories.length; i++) {
         const option = document.createElement("option");
         option.value = categories[i].id;
@@ -476,7 +532,6 @@ function createAddPhotoModal() {
     addPhotoSubmitButton.classList.add("btn-envoyer");
     addPhotoSubmitButton.innerText = "Ajouter";
 
-    // Ajoutez une div vide avec la classe "separator" avant le bouton "btn-envoyer"
     const separatorDiv = document.createElement("div");
     separatorDiv.classList.add("separator");
 
@@ -533,6 +588,5 @@ function createAddPhotoModal() {
 
     return addPhotoModalContent;
 }
-
 
 

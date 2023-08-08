@@ -307,6 +307,12 @@ li:hover {
 	font: inherit;
 	cursor: pointer;
 	outline: inherit;
+	margin-left: 2px;
+	order: 3;
+}
+
+.portfolio-title svg{
+	order: 2;
 	margin-left: 10px;
 }
 
@@ -409,6 +415,14 @@ li:hover {
 #hover-icon i {
 	color: white;
 	background-color: black;
+	border-radius: 20%;
+	margin-right: 5px;
+}
+
+#trash-icon {
+	color: white;
+	background-color: black;
+	border-radius: 20%;
 }
 
 .gallery-card img {
@@ -422,11 +436,14 @@ li:hover {
 }
 
 .gallery-card .delete-icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	position: absolute;
 	top: 5px;
 	right: 5px;
 	color: #ffffff;
-	padding: 4px;
+	padding: 6px;
 	background-color: black;
 	width: 10px;
 	height: 10px;
@@ -539,6 +556,11 @@ li:hover {
 
 .back-button {
 	cursor: pointer;
+	background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
 }
 
 .buttons-row {
@@ -558,6 +580,12 @@ li:hover {
 	justify-content: space-between;
 	background-color: white;
 	height: 500px;
+	padding-left: 100px;
+	padding-right: 100px;
+}
+
+.add-photo-modal-content p {
+	align-self: flex-start;
 }
 
 .add-photo-modal-content .modal-title {
@@ -576,13 +604,14 @@ li:hover {
 	padding: 20px;
 }
 
-.add-picture-div img {
+.imagePlaceholder {
 	width: 58px;
 	height: 58px;
 }
 
 .add-picture-div p {
 	background-color: transparent;
+	align-self: center;
 }
 
 .add-photo-button {
@@ -610,6 +639,12 @@ li:hover {
 	height: 1px;
 	background-color: #B3B3B3;
 	margin-top: 30px;
+}
+
+#preview-imageID {
+	max-width: 100%;
+	max-height: 100%;
+	object-fit: cover;
 }
 
 .croix {
