@@ -256,35 +256,38 @@ function createModal() {
             hoverLink.href = "#";
             hoverLink.id = "hover-icon";
 
-            deleteLink.addEventListener("click", (event) => {
+            deleteLink.addEventListener("click", async (event) => {
                 event.preventDefault();
-
+            
                 const token = localStorage.getItem("token");
                 if (token) {
                     const workId = works[i].id;
                     const url = `http://localhost:5678/api/works/${workId}`;
-
-                    fetch(url, {
-                        method: "DELETE",
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    })
-                        .then((response) => {
-                            if (response.ok) {
-                                works = works.filter((work) => work.id !== workId);
-                                workElement.remove(); // Supprimer l'élément du DOM
-                            } else {
-                                console.error("Failed to delete work");
-                            }
-                        })
-                        .catch((error) => {
-                            console.error("Error:", error);
+            
+                    try {
+                        const response = await fetch(url, {
+                            method: "DELETE",
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                            },
                         });
+            
+                        if (response.ok) {
+                            works = works.filter((work) => work.id !== workId);
+                            workElement.remove(); // Supprimer l'élément du DOM
+            
+                            // Rafraîchir la page index
+                            location.reload(true);
+                        } else {
+                            console.error("Échec de la suppression du travail");
+                        }
+                    } catch (error) {
+                        console.error("Erreur :", error);
+                    }
                 } else {
-                    console.log("Admin mode is not enabled");
+                    console.log("Le mode administrateur n'est pas activé");
                 }
-            });
+            });            
 
             workElement.classList.add("gallery-card");
 
@@ -563,6 +566,7 @@ function createAddPhotoModal() {
                 if (response.ok) {
                     closeModal();
                     loadApi();
+                    window.location.reload(true);
                 } else {
                     console.error("Failed to add work");
                 }
