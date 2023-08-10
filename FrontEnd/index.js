@@ -98,7 +98,6 @@ function filterWorksByCategory(categoryId) {
     }
 }
 
-
 /********************************************************************/
 
 /****** Mode administrateur *****/
@@ -258,12 +257,12 @@ function createModal() {
 
             deleteLink.addEventListener("click", async (event) => {
                 event.preventDefault();
-            
+
                 const token = localStorage.getItem("token");
                 if (token) {
                     const workId = works[i].id;
                     const url = `http://localhost:5678/api/works/${workId}`;
-            
+
                     try {
                         const response = await fetch(url, {
                             method: "DELETE",
@@ -271,13 +270,13 @@ function createModal() {
                                 Authorization: `Bearer ${token}`,
                             },
                         });
-            
+
                         if (response.ok) {
                             works = works.filter((work) => work.id !== workId);
                             workElement.remove(); // Supprimer l'élément du DOM
-            
-                            // Rafraîchir la page index
-                            location.reload(true);
+
+                            updateGallery();
+
                         } else {
                             console.error("Échec de la suppression du travail");
                         }
@@ -287,7 +286,7 @@ function createModal() {
                 } else {
                     console.log("Le mode administrateur n'est pas activé");
                 }
-            });            
+            });
 
             workElement.classList.add("gallery-card");
 
@@ -377,6 +376,25 @@ function createModal() {
     modal.appendChild(content);
 
     return modal;
+}
+
+function updateGallery() {
+    const sectionWorks = document.querySelector(".gallery");
+    sectionWorks.innerHTML = ""; // Effacer le contenu existant
+
+    // Remplir la galerie en utilisant le tableau 'works' mis à jour
+    for (let i = 0; i < works.length; i++) {
+        const workElement = document.createElement("div");
+        const imageWork = document.createElement("img");
+        const titleWork = document.createElement("p");
+
+        imageWork.src = works[i].imageUrl;
+        titleWork.innerText = works[i].title;
+
+        workElement.appendChild(imageWork);
+        workElement.appendChild(titleWork);
+        sectionWorks.appendChild(workElement);
+    }
 }
 
 /*********************************************************/
@@ -564,16 +582,35 @@ function createAddPhotoModal() {
         })
             .then((response) => {
                 if (response.ok) {
-                    closeModal();
-                    loadApi();
-                    window.location.reload(true);
+                    return response.json();
                 } else {
                     console.error("Failed to add work");
                 }
             })
+            .then((newWork) => {
+                works.push(newWork);
+                addWorkToGallery(newWork);
+
+                closeModal();
+            })
             .catch((error) => {
                 console.error("Error:", error);
             });
+    }
+
+    // Fonction pour ajouter un travail à la galerie
+    function addWorkToGallery(work) {
+        const sectionWorks = document.querySelector(".gallery");
+        const workElement = document.createElement("div");
+        const imageWork = document.createElement("img");
+        const titleWork = document.createElement("p");
+
+        imageWork.src = work.imageUrl;
+        titleWork.innerText = work.title;
+
+        workElement.appendChild(imageWork);
+        workElement.appendChild(titleWork);
+        sectionWorks.appendChild(workElement);
     }
 
     addPhotoForm.appendChild(addPictureDiv);
