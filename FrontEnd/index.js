@@ -273,9 +273,11 @@ function createModal() {
 
                         if (response.ok) {
                             works = works.filter((work) => work.id !== workId);
-                            workElement.remove(); // Supprimer l'élément du DOM
+                            workElement.remove(); 
 
                             updateGallery();
+
+                            closeModal();
 
                         } else {
                             console.error("Échec de la suppression du travail");
@@ -354,6 +356,7 @@ function createModal() {
                         works = [];
                         const sectionWorks = document.querySelector(".gallery");
                         sectionWorks.innerHTML = "";
+                        closeModal();
                     } else {
                         console.error("Failed to delete gallery");
                     }
