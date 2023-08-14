@@ -383,9 +383,9 @@ function createModal() {
 
 function updateGallery() {
     const sectionWorks = document.querySelector(".gallery");
-    sectionWorks.innerHTML = ""; // Effacer le contenu existant
+    sectionWorks.innerHTML = ""; 
 
-    // Remplir la galerie en utilisant le tableau 'works' mis à jour
+    
     for (let i = 0; i < works.length; i++) {
         const workElement = document.createElement("div");
         const imageWork = document.createElement("img");
@@ -435,7 +435,7 @@ function createAddPhotoModal() {
 
         if (file) {
             const fileSizeInBytes = file.size;
-            const maxSizeInBytes = 4 * 1024 * 1024; // 4 Mo
+            const maxSizeInBytes = 4 * 1024 * 1024; // 4 Mo MAX
 
             if (fileSizeInBytes > maxSizeInBytes) {
                 alert("La taille de l'image dépasse la limite de 4 Mo. Veuillez choisir une image plus petite.");
@@ -447,7 +447,7 @@ function createAddPhotoModal() {
             reader.onload = (event) => {
                 addPhotoImage.src = event.target.result;
 
-                // Supprimer le contenu existant de la div
+                // Supprime le contenu existant de la div
                 addPictureDiv.innerHTML = "";
 
                 // Créer un nouvel élément img pour l'aperçu avec un ID fixe
@@ -456,7 +456,7 @@ function createAddPhotoModal() {
                 previewImage.classList.add("preview-image");
                 previewImage.setAttribute("id", "preview-imageID");
 
-                // Ajouter l'image de l'aperçu à la "ADD-PICTURE-DIV"
+                // Ajout de l'image de l'aperçu
                 addPictureDiv.appendChild(previewImage);
             };
 
@@ -544,7 +544,6 @@ function createAddPhotoModal() {
     addPhotoCategoryEmptyOption.value = "";
     addPhotoCategorySelect.appendChild(addPhotoCategoryEmptyOption);
 
-    // Assumant que 'categories' est défini ailleurs dans le code.
     for (let i = 0; i < categories.length; i++) {
         const option = document.createElement("option");
         option.value = categories[i].id;
