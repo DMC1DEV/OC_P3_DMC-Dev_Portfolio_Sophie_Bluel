@@ -273,7 +273,7 @@ function createModal() {
 
                         if (response.ok) {
                             works = works.filter((work) => work.id !== workId);
-                            workElement.remove(); 
+                            workElement.remove();
 
                             updateGallery();
 
@@ -383,9 +383,9 @@ function createModal() {
 
 function updateGallery() {
     const sectionWorks = document.querySelector(".gallery");
-    sectionWorks.innerHTML = ""; 
+    sectionWorks.innerHTML = "";
 
-    
+
     for (let i = 0; i < works.length; i++) {
         const workElement = document.createElement("div");
         const imageWork = document.createElement("img");
@@ -558,6 +558,8 @@ function createAddPhotoModal() {
     const separatorDiv = document.createElement("div");
     separatorDiv.classList.add("separator");
 
+    // Formualaire 
+
     function handleFormSubmit(event) {
         event.preventDefault();
 
@@ -632,4 +634,14 @@ function createAddPhotoModal() {
     return addPhotoModalContent;
 }
 
+// BEST VERSION procedural
+
+gallery.insertAdjacentHTML("beforeend",
+    `
+            <figure>
+				<img src="${info.imageUrl}" alt="${info.title}">
+				<figcaption>${info.title}</figcaption>
+			</figure>
+        `
+);
 
